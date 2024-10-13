@@ -1,11 +1,42 @@
 // client/src/components/PropertyCards.js
-import React from 'react';
+import React, { useState } from 'react';
 import SwipeableViews from 'react-swipeable-views';
+import axios from 'axios';
 
-const PropertyCards = ({ properties }) => {
+const PropertyCards = ({ properties, tenantId }) => {
+  const [index, setIndex] = useState(0);
+
+  const handleSwipe = async (newIndex) => {
+    if (newIndex > index) {
+      // Swipe right
+      try {
+        await axios.post(`/api/users/tenant/${tenantId}/save-property`, {
+          propertyId: properties[index]._id
+        });
+        alert('Property saved!');
+      } catch (error) {
+        console.error('Error saving property:', error);
+      }
+    }
+
+    // Update the index for next property
+    if (newIndex < properties.length) {
+      setIndex(newIndex);
+    } else {
+      alert("You've gone through all the properties!");
+    }
+  };
+
   return (
     <div style={{ maxWidth: '400px', margin: 'auto' }}>
-      <SwipeableViews>
+      <SwipeableViews
+        index={index}
+        onChangeIndex={(newIndex) => {
+          if (newIndex !== index) {
+            handleSwipe(newIndex);
+          }
+        }}
+      >
         {properties.map((property) => (
           <div key={property._id} style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px', marginBottom: '20px' }}>
             <img

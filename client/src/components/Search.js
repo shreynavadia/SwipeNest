@@ -21,8 +21,16 @@ const Search = () => {
       });
       setProperties(response.data);
     } catch (error) {
-      console.error('Error fetching properties:', error);
       alert('Failed to fetch properties.');
+    }
+  };
+
+  const handleSwipeRight = async (property) => {
+    try {
+      await axios.post('/api/users/save-property', { propertyId: property._id });
+      alert('Property saved!');
+    } catch (error) {
+      alert('Failed to save property.');
     }
   };
 
@@ -69,7 +77,7 @@ const Search = () => {
 
       {properties.length > 0 && (
         <div className="mt-4">
-          <PropertyCards properties={properties} />
+          <PropertyCards properties={properties} onSwipeRight={handleSwipeRight} />
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const Landlord = require('../models/Landlord');
+const Tenant = require('../models/Tenant');
 
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' }); // Update this path as needed
@@ -26,10 +27,8 @@ router.post('/landlord', upload.single('coverPhoto'), async (req, res) => {
       amenities
     } = req.body;
 
-    // Check if amenities is an array, if not, make it an empty array
     const amenitiesArray = Array.isArray(amenities) ? amenities : [];
 
-    // Create a new landlord entry
     const newLandlord = new Landlord({
       firebaseUID,
       email,
@@ -45,7 +44,7 @@ router.post('/landlord', upload.single('coverPhoto'), async (req, res) => {
       propertyCertificateNumber,
       squareFootage: Number(squareFootage),
       amenities: amenitiesArray,
-      coverPhoto: req.file ? req.file.path : null // Path to uploaded file
+      coverPhoto: req.file ? req.file.path : null 
     });
 
     await newLandlord.save();
@@ -71,6 +70,29 @@ router.get('/properties', async (req, res) => {
   } catch (error) {
     console.error('Error fetching properties:', error);
     res.status(500).json({ error: 'Failed to fetch properties' });
+  }
+});
+
+// Route to save a property to a tenant's saved properties
+router.post('/tenant/:id/save-property', async (req, res) => {
+  const { id } = req.params;
+  const { propertyId } = req.body;
+
+  try {
+    const tenant = await Tenant.findById(id);
+    if (!tenant) {
+      return res.status(404).json({ message: 'Tenant not found' });
+    }
+
+    if (!tenant.savedProperties.includes(propertyId)) {
+      tenant.savedProperties.push(propertyId);
+      await tenant.save();
+    }
+
+    res.status(200).json({ message: 'Property saved successfully' });
+  } catch (error) {
+    console.error('Error saving property for tenant:', error);
+    res.status(500).json({ error: 'Failed to save property' });
   }
 });
 

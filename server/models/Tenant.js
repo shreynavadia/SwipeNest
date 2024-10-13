@@ -22,6 +22,10 @@ const TenantSchema = new mongoose.Schema({
     type: String,
     required: false
   },
+  savedProperties: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Landlord' // Reference to the Landlord model or properties
+  }],
   createdAt: {
     type: Date,
     default: Date.now
