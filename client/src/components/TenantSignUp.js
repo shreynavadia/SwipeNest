@@ -36,14 +36,67 @@ const TenantSignUp = () => {
   };
 
   return (
-    <form onSubmit={handleSignUp}>
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-      <input type="text" placeholder="Preferred Location" value={preferredLocation} onChange={(e) => setPreferredLocation(e.target.value)} />
-      <button type="submit">Sign Up as Tenant</button>
-    </form>
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">Tenant Sign Up</h2>
+      <form onSubmit={handleSignUp} className="card p-4 shadow">
+        <div className="form-group mb-3">
+          <label>Email</label>
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <label>Password</label>
+          <input
+            type="password"
+            className="form-control"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <label>Name</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <label>Phone</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group mb-3">
+          <label>Preferred Location</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Preferred Location"
+            value={preferredLocation}
+            onChange={(e) => setPreferredLocation(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary btn-block">Sign Up as Tenant</button>
+      </form>
+    </div>
   );
 };
 

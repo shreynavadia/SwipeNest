@@ -21,12 +21,35 @@ const Login = () => {
   };
 
   return (
-    <div style={{ /* styling omitted for brevity */ }}>
-      <form onSubmit={handleLogin} style={{ /* styling omitted for brevity */ }}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
-      </form>
+    <div className="container d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <div className="card p-4 shadow" style={{ maxWidth: '400px', width: '100%' }}>
+        <h2 className="text-center mb-4">Login</h2>
+        <form onSubmit={handleLogin}>
+          <div className="form-group mb-3">
+            <label>Email</label>
+            <input 
+              type="email" 
+              className="form-control" 
+              placeholder="Enter your email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required
+            />
+          </div>
+          <div className="form-group mb-3">
+            <label>Password</label>
+            <input 
+              type="password" 
+              className="form-control" 
+              placeholder="Enter your password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary btn-block w-100">Login</button>
+        </form>
+      </div>
     </div>
   );
 };

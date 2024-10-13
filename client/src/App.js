@@ -7,6 +7,9 @@ import LandlordSignUp from './components/LandlordSignUp';
 import Login from './components/Login';
 import Search from './components/Search';
 import SavedProperties from './components/SavedProperties';
+// index.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (

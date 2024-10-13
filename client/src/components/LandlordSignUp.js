@@ -10,7 +10,7 @@ const LandlordSignUp = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [propertiesOwned, setPropertiesOwned] = useState('');
-  const [city, setCity] = useState(''); // New field for city
+  const [city, setCity] = useState('');
   const [propertyName, setPropertyName] = useState('');
   const [propertyAddress, setPropertyAddress] = useState('');
   const [bedrooms, setBedrooms] = useState(1);
@@ -33,7 +33,6 @@ const LandlordSignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      // Simulate certificate verification
       if (!/^1|2|3|4|5/.test(propertyCertificateNumber)) {
         alert('Certificate invalid, verification unsuccessful.');
         return;
@@ -41,11 +40,8 @@ const LandlordSignUp = () => {
 
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUID = userCredential.user.uid;
-
-      // Convert selected amenities to an array
       const selectedAmenities = Object.keys(amenities).filter((amenity) => amenities[amenity]);
 
-      // Send user data to the backend to store in MongoDB
       await axios.post('/api/users/landlord', {
         firebaseUID,
         email,
@@ -61,7 +57,7 @@ const LandlordSignUp = () => {
         propertyCertificateNumber,
         squareFootage,
         amenities: selectedAmenities,
-        coverPhoto, // Cover photo handling may need additional implementation for file upload
+        coverPhoto, 
       });
 
       navigate('/login');
@@ -84,46 +80,83 @@ const LandlordSignUp = () => {
   };
 
   return (
-    <form onSubmit={handleSignUp}>
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-      <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-      <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} required />
-      <input type="number" placeholder="Properties Owned" value={propertiesOwned} onChange={(e) => setPropertiesOwned(e.target.value)} />
-      <input type="text" placeholder="Property Name" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} />
-      <input type="text" placeholder="Property Address" value={propertyAddress} onChange={(e) => setPropertyAddress(e.target.value)} />
-      <input type="number" placeholder="Bedrooms" value={bedrooms} min="1" max="10" onChange={(e) => setBedrooms(e.target.value)} />
-      <input type="number" placeholder="Bathrooms" value={bathrooms} min="1" max="10" onChange={(e) => setBathrooms(e.target.value)} />
-      <textarea placeholder="Description (max 250 chars)" value={description} onChange={(e) => setDescription(e.target.value)} maxLength="250" />
-      <input type="text" placeholder="Property Certificate Number" value={propertyCertificateNumber} onChange={(e) => setPropertyCertificateNumber(e.target.value)} required />
-      <input type="number" placeholder="Square Footage" value={squareFootage} onChange={(e) => setSquareFootage(e.target.value)} />
-      
-      <label>Amenities:</label>
-      <div>
-        <label>
-          <input type="checkbox" name="pool" checked={amenities.pool} onChange={handleAmenityChange} /> Pool
-        </label>
-        <label>
-          <input type="checkbox" name="gym" checked={amenities.gym} onChange={handleAmenityChange} /> Gym
-        </label>
-        <label>
-          <input type="checkbox" name="laundry" checked={amenities.laundry} onChange={handleAmenityChange} /> Laundry
-        </label>
-        <label>
-          <input type="checkbox" name="dishwasher" checked={amenities.dishwasher} onChange={handleAmenityChange} /> Dishwasher
-        </label>
-        <label>
-          <input type="checkbox" name="aircon" checked={amenities.aircon} onChange={handleAmenityChange} /> Air Conditioning
-        </label>
-        <label>
-          <input type="checkbox" name="balcony" checked={amenities.balcony} onChange={handleAmenityChange} /> Balcony
-        </label>
-      </div>
-
-      <input type="file" onChange={handleCoverPhotoChange} />
-      <button type="submit">Sign Up as Landlord</button>
-    </form>
+    <div className="container mt-5">
+      <h2 className="text-center mb-4">Landlord Sign Up</h2>
+      <form onSubmit={handleSignUp} className="card p-4 shadow">
+        <div className="form-group mb-3">
+          <label>Email</label>
+          <input type="email" className="form-control" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div className="form-group mb-3">
+          <label>Password</label>
+          <input type="password" className="form-control" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+        <div className="form-group mb-3">
+          <label>Name</label>
+          <input type="text" className="form-control" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+        </div>
+        <div className="form-group mb-3">
+          <label>Phone</label>
+          <input type="text" className="form-control" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+        </div>
+        <div className="form-group mb-3">
+          <label>City</label>
+          <input type="text" className="form-control" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+        </div>
+        <div className="form-group mb-3">
+          <label>Properties Owned</label>
+          <input type="number" className="form-control" placeholder="Properties Owned" value={propertiesOwned} onChange={(e) => setPropertiesOwned(e.target.value)} />
+        </div>
+        <div className="form-group mb-3">
+          <label>Property Name</label>
+          <input type="text" className="form-control" placeholder="Property Name" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} />
+        </div>
+        <div className="form-group mb-3">
+          <label>Property Address</label>
+          <input type="text" className="form-control" placeholder="Property Address" value={propertyAddress} onChange={(e) => setPropertyAddress(e.target.value)} />
+        </div>
+        <div className="form-row">
+          <div className="col mb-3">
+            <label>Bedrooms</label>
+            <input type="number" className="form-control" placeholder="Bedrooms" value={bedrooms} min="1" max="10" onChange={(e) => setBedrooms(e.target.value)} />
+          </div>
+          <div className="col mb-3">
+            <label>Bathrooms</label>
+            <input type="number" className="form-control" placeholder="Bathrooms" value={bathrooms} min="1" max="10" onChange={(e) => setBathrooms(e.target.value)} />
+          </div>
+        </div>
+        <div className="form-group mb-3">
+          <label>Description</label>
+          <textarea className="form-control" placeholder="Description (max 250 chars)" value={description} onChange={(e) => setDescription(e.target.value)} maxLength="250" />
+        </div>
+        <div className="form-group mb-3">
+          <label>Property Certificate Number</label>
+          <input type="text" className="form-control" placeholder="Property Certificate Number" value={propertyCertificateNumber} onChange={(e) => setPropertyCertificateNumber(e.target.value)} required />
+        </div>
+        <div className="form-group mb-3">
+          <label>Square Footage</label>
+          <input type="number" className="form-control" placeholder="Square Footage" value={squareFootage} onChange={(e) => setSquareFootage(e.target.value)} />
+        </div>
+        <div className="form-group mb-3">
+          <label>Upload Cover Photo</label>
+          <input type="file" className="form-control" onChange={handleCoverPhotoChange} />
+        </div>
+        <div className="form-group mb-3">
+          <label>Amenities:</label>
+          <div className="d-flex flex-wrap">
+            {Object.keys(amenities).map((amenity) => (
+              <div key={amenity} className="form-check mr-3">
+                <input type="checkbox" className="form-check-input" id={amenity} name={amenity} checked={amenities[amenity]} onChange={handleAmenityChange} />
+                <label className="form-check-label" htmlFor={amenity}>
+                  {amenity.charAt(0).toUpperCase() + amenity.slice(1)}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <button type="submit" className="btn btn-primary btn-block">Sign Up as Landlord</button>
+      </form>
+    </div>
   );
 };
 
