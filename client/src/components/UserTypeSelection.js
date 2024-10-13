@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png'; // Adjust the path to where your logo image is stored
 
 const UserTypeSelection = () => {
   const navigate = useNavigate();
@@ -10,6 +11,10 @@ const UserTypeSelection = () => {
 
   const handleLandlordClick = () => {
     navigate('/signup-landlord');
+  };
+
+  const handleLoginClick = () => {
+    navigate('/login');
   };
 
   const containerStyle = {
@@ -41,11 +46,28 @@ const UserTypeSelection = () => {
     textAlign: 'center',
   };
 
+  const logoStyle = {
+    width: '600px', // Adjust width as needed
+    marginBottom: '20px',
+  };
+
+  const loginLinkStyle = {
+    marginTop: '20px',
+    fontSize: '16px',
+    color: '#4CAF50',
+    cursor: 'pointer',
+    textDecoration: 'underline',
+  };
+
   return (
     <div style={containerStyle}>
+      <img src={logo} alt="Logo" style={logoStyle} />
       <div style={titleStyle}>Select Account Type</div>
       <button onClick={handleTenantClick} style={buttonStyle}>I am a Tenant</button>
       <button onClick={handleLandlordClick} style={buttonStyle}>I am a Landlord</button>
+      <div style={loginLinkStyle} onClick={handleLoginClick}>
+        Already have an account? Login
+      </div>
     </div>
   );
 };

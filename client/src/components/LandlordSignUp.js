@@ -33,10 +33,10 @@ const LandlordSignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      if (!/^1|2|3|4|5/.test(propertyCertificateNumber)) {
+      if (!/^[1-5]/.test(propertyCertificateNumber)) {
         alert('Certificate invalid, verification unsuccessful.');
         return;
-      }
+      }      
 
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUID = userCredential.user.uid;
