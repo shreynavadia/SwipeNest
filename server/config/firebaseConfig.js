@@ -1,0 +1,12 @@
+const admin = require('firebase-admin');
+
+admin.initializeApp({
+  credential: admin.credential.cert({
+    project_id: "swipenest-97460",
+    private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDIDb9MlFf4+toY\n7ytOjk42V6PIo3vkZvEiPRfRcMu1uZQNVJaoKvQLEqRrclIpocaBXYBFNuLTRWzI\nYw5hQNoWGlKHMQ8qCvktVW+GlU8aiLF+tyXH2rgPPrIt4gpH4H6HIfem+fAonD5F\nKsW4XuRemvsSvuI1F3irQ/2Pc2Mo08JaOg703i8kSs8urpUuxyyNb0NIFJbnxYAi\noRgWsp2Vmizaao0Gbc6WbZUctl3yoXHZx3AWYt6Wn3QrXCbhkvxw9dzQ+sTY6BqU\nDo0fYej2ewUjUA0V6P5aM8/Rs8WZJrkMCiXZJZBoSMKpZgWpfp6TIpMdtnA0H5hf\nzVPxAGjDAgMBAAECggEAE/0M+6WozTz3P12KSgeS+Kq0t9k0iaOK0rJ1p5y/EJG8\ndsEtv8YcQIz6IQLjrbrhyXmNAEgVzX6Wz3DXoM+o2rjXknV26pWnxFKl2Ysf7mqb\nstRcMdtV3669K94gIS1k8bNAT46SjeQ1SUDsT4R/tJTZ+Etam8EUHVH7oEfVr7Wc\n6fwedFSJo/LNdcpxoI7EyzT1jt9aKa8tBgY5H3zZixX3uZtJpyySOVtxAjbtgDMX\nQquUtDr0nGw4HGoF25P58Lr802vUJXWeWrZ5V81VFjzu62rFYahtp/4eGbayRsrz\nCFg5y3fY56gLdqaPfGtkfLT9u+shqkogy2iJsnlYDQKBgQDqUeygRJfiNV97CEoU\nSO0jiFrEQsisQC+84mQsnSCUODBYYJT0ENGIzFwFhBEEK4N2FA3PU166ongDH3FX\nqJGdO+C/rbHhf1+bKtfbE4ylRrlr1LYCL51yftZrNxcjUzovEcOIa1GalEx7lEE0\nV5NXtcCIl4VOYtbrfP6Lzm5LfwKBgQDakDHxy5vZDMvoD9oDUy9H7lfOqDcO3+hU\nXQjl9fVgI3lsV/2e25PWrzQ0Sl+1LT4TURx2/wpI2DOKRvBUrPylr/k//pg42HbJ\n2Qgk8R/XoB4UBnopeym13hI6uGj9aQq7zJOqY05OZb8M44FgQ8p+LHW1Sav3DP8V\nF49R8bNUvQKBgAm3yBaFgb8R85nIqDnbJGqa1xjYpDXwm4o74WewRI+hHPAtYUAW\nCnqf7xkTdxkzLMqS3lfA32biIhQPE8ZM6W0Z9KI+c+gkPjTTPAyL7QNVwY7lTX8d\ntmvvMrlTmZQPeZRGKlPYD5RXnixp46JmF2hF02xWzGKJ2tv9XRkzQIPFAoGBAMEN\nAoB/hr311pm4fqnXLPkNJlPsMw2Zap4xuu1cDguH6fVv1x4c9v12rdbOJrFiL+Vi\nDJFy/oOPLB8kP52bWmGDCNakq5HyaSIq6E2xCZ4s2MR5YCgJmLMCXvms71d+E7QD\npB6pLn6C0niw7xK3bkF6RdIGK7XArgLUV4xawDrFAoGBAKIy1Nj7j1eeYK8mYe3E\naS76D9sly/pinuYsFoXn4MxvricYMeFh2xibQPBiOgxRPRPw79MyxanCkFGsAr8G\nC0H7OQH+FS+jeE/TbjVd5RScqI6fRgwk4KkswzUelvTAGNyy4gqX1vKda2ig5zml\nCfXlyYB2dH9AiizafnEJM/Fc\n-----END PRIVATE KEY-----\n",
+    client_email: "firebase-adminsdk-iw0cz@swipenest-97460.iam.gserviceaccount.com",
+  }),
+  databaseURL: "https://swipenest-97460.firebaseio.com"
+});
+
+module.exports = admin;
