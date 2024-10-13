@@ -10,52 +10,58 @@ const LandlordSignUp = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [propertiesOwned, setPropertiesOwned] = useState('');
+  const [city, setCity] = useState(''); // New field for city
   const [propertyName, setPropertyName] = useState('');
   const [propertyAddress, setPropertyAddress] = useState('');
+  const [bedrooms, setBedrooms] = useState(1);
+  const [bathrooms, setBathrooms] = useState(1);
+  const [description, setDescription] = useState('');
   const [propertyCertificateNumber, setPropertyCertificateNumber] = useState('');
   const [squareFootage, setSquareFootage] = useState('');
-  const [bedrooms, setBedrooms] = useState('');
-  const [bathrooms, setBathrooms] = useState('');
-  const [description, setDescription] = useState('');
-  const [amenities, setAmenities] = useState([]);
-  const [coverPhoto, setCoverPhoto] = useState(null); // For file upload
-  const navigate = useNavigate();
+  const [coverPhoto, setCoverPhoto] = useState(null);
+  const [amenities, setAmenities] = useState({
+    pool: false,
+    gym: false,
+    laundry: false,
+    dishwasher: false,
+    aircon: false,
+    balcony: false,
+  });
 
-  const handleAmenityChange = (e) => {
-    const { value, checked } = e.target;
-    setAmenities(checked ? [...amenities, value] : amenities.filter(a => a !== value));
-  };
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
+      // Simulate certificate verification
+      if (!/^1|2|3|4|5/.test(propertyCertificateNumber)) {
+        alert('Certificate invalid, verification unsuccessful.');
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUID = userCredential.user.uid;
 
-      // Create FormData to include file upload
-      const formData = new FormData();
-      formData.append('firebaseUID', firebaseUID);
-      formData.append('email', email);
-      formData.append('name', name);
-      formData.append('phone', phone);
-      formData.append('propertiesOwned', propertiesOwned);
-      formData.append('propertyName', propertyName);
-      formData.append('propertyAddress', propertyAddress);
-      formData.append('propertyCertificateNumber', propertyCertificateNumber);
-      formData.append('squareFootage', squareFootage);
-      formData.append('bedrooms', bedrooms);
-      formData.append('bathrooms', bathrooms);
-      formData.append('description', description);
-      formData.append('amenities', JSON.stringify(amenities)); // Send as JSON string
-      if (coverPhoto) {
-        formData.append('coverPhoto', coverPhoto);
-      }
+      // Convert selected amenities to an array
+      const selectedAmenities = Object.keys(amenities).filter((amenity) => amenities[amenity]);
 
-      // Send formData to backend
-      await axios.post('/api/users/landlord', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      // Send user data to the backend to store in MongoDB
+      await axios.post('/api/users/landlord', {
+        firebaseUID,
+        email,
+        name,
+        phone,
+        city,
+        propertiesOwned,
+        propertyName,
+        propertyAddress,
+        bedrooms,
+        bathrooms,
+        description,
+        propertyCertificateNumber,
+        squareFootage,
+        amenities: selectedAmenities,
+        coverPhoto, // Cover photo handling may need additional implementation for file upload
       });
 
       navigate('/login');
@@ -65,43 +71,57 @@ const LandlordSignUp = () => {
     }
   };
 
+  const handleCoverPhotoChange = (e) => {
+    setCoverPhoto(e.target.files[0]);
+  };
+
+  const handleAmenityChange = (e) => {
+    const { name, checked } = e.target;
+    setAmenities((prevAmenities) => ({
+      ...prevAmenities,
+      [name]: checked,
+    }));
+  };
+
   return (
-    <form onSubmit={handleSignUp} encType="multipart/form-data">
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+    <form onSubmit={handleSignUp}>
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+      <input type="text" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+      <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} required />
       <input type="number" placeholder="Properties Owned" value={propertiesOwned} onChange={(e) => setPropertiesOwned(e.target.value)} />
       <input type="text" placeholder="Property Name" value={propertyName} onChange={(e) => setPropertyName(e.target.value)} />
       <input type="text" placeholder="Property Address" value={propertyAddress} onChange={(e) => setPropertyAddress(e.target.value)} />
-      <input type="text" placeholder="Property Certificate Number" value={propertyCertificateNumber} onChange={(e) => setPropertyCertificateNumber(e.target.value)} />
+      <input type="number" placeholder="Bedrooms" value={bedrooms} min="1" max="10" onChange={(e) => setBedrooms(e.target.value)} />
+      <input type="number" placeholder="Bathrooms" value={bathrooms} min="1" max="10" onChange={(e) => setBathrooms(e.target.value)} />
+      <textarea placeholder="Description (max 250 chars)" value={description} onChange={(e) => setDescription(e.target.value)} maxLength="250" />
+      <input type="text" placeholder="Property Certificate Number" value={propertyCertificateNumber} onChange={(e) => setPropertyCertificateNumber(e.target.value)} required />
       <input type="number" placeholder="Square Footage" value={squareFootage} onChange={(e) => setSquareFootage(e.target.value)} />
-      <input type="number" placeholder="Number of Bedrooms" value={bedrooms} onChange={(e) => setBedrooms(e.target.value)} />
-      <input type="number" placeholder="Number of Bathrooms" value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} />
-      <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} maxLength="250"></textarea>
-
+      
+      <label>Amenities:</label>
       <div>
         <label>
-          <input type="checkbox" value="pool" onChange={handleAmenityChange} /> Pool
+          <input type="checkbox" name="pool" checked={amenities.pool} onChange={handleAmenityChange} /> Pool
         </label>
         <label>
-          <input type="checkbox" value="gym" onChange={handleAmenityChange} /> Gym
+          <input type="checkbox" name="gym" checked={amenities.gym} onChange={handleAmenityChange} /> Gym
         </label>
         <label>
-          <input type="checkbox" value="laundry" onChange={handleAmenityChange} /> Laundry
+          <input type="checkbox" name="laundry" checked={amenities.laundry} onChange={handleAmenityChange} /> Laundry
         </label>
         <label>
-          <input type="checkbox" value="dishwasher" onChange={handleAmenityChange} /> Dishwasher
+          <input type="checkbox" name="dishwasher" checked={amenities.dishwasher} onChange={handleAmenityChange} /> Dishwasher
         </label>
         <label>
-          <input type="checkbox" value="aircon" onChange={handleAmenityChange} /> Air Conditioning
+          <input type="checkbox" name="aircon" checked={amenities.aircon} onChange={handleAmenityChange} /> Air Conditioning
         </label>
         <label>
-          <input type="checkbox" value="balcony" onChange={handleAmenityChange} /> Balcony
+          <input type="checkbox" name="balcony" checked={amenities.balcony} onChange={handleAmenityChange} /> Balcony
         </label>
       </div>
 
-      <input type="file" onChange={(e) => setCoverPhoto(e.target.files[0])} />
+      <input type="file" onChange={handleCoverPhotoChange} />
       <button type="submit">Sign Up as Landlord</button>
     </form>
   );

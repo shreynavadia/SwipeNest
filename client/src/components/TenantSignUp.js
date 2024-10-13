@@ -1,3 +1,4 @@
+// client/src/components/TenantSignUp.js
 import React, { useState } from 'react';
 import { auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';

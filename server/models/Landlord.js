@@ -55,6 +55,10 @@ const LandlordSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  city: {
+    type: String,
+    required: true
+  },
   squareFootage: {
     type: Number,
     required: true
